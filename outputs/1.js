@@ -208,4 +208,272 @@
 // console.log(b); // same as the refrence is same
 
 // --------------
-console.log("OUTPUT BASED QUESTION");
+
+// ========================================================================================
+console.log("========CUSTOM METHODS PRACTICE START=============");
+/*
+function debounce(fn, delay = 500) {
+  let timer;
+
+  return function (...args) {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
+function debouncedData(args) {
+  console.log("Debounced executed", args);
+}
+
+const debouncedSearch = debounce(debouncedData, 1000);
+
+debouncedSearch(1);
+debouncedSearch(2);
+debouncedSearch(3);
+*/
+/*
+function throttle(fn, delay) {
+  let lastTime = 0;
+
+  return function (...args) {
+    let now = Date.now();
+
+    if (now - lastTime >= delay) {
+      fn.apply(this, args);
+      lastTime = now;
+    }
+  };
+}
+
+const throttleData = (arg) => {
+  console.log(`Throttle Executed - ${new Date().toLocaleTimeString()}`, arg);
+};
+
+const throttleSearch = throttle(throttleData, 3000);
+
+setInterval(() => {
+  throttleSearch("Hello");
+}, 500);
+*/
+
+/*
+Array.prototype.myMap = function (callback) {
+  let result = [];
+
+  for (let i = 0; i < this.length; i++) {
+    if (callback(this[i], i, this)) {
+      result.push(callback(this[i], i, this));
+    }
+  }
+
+  return result;
+};
+
+const mappedVal = [5, 3, 4, 5, 6, 8].myMap((item) => {
+  return item * 2;
+});
+
+console.log(mappedVal);
+*/
+/*
+Array.prototype.myFilter = function (callback) {
+  let result = [];
+
+  for (let i = 0; i < this.length; i++) {
+    if (callback(this[i], i, this)) {
+      result.push(this[i]);
+    }
+  }
+
+  return result;
+};
+
+const filteredVal = [5, 3, 4, 5, 6, 8].myFilter((item) => {
+  return item > 4;
+});
+
+console.log(filteredVal);
+*/
+
+/*
+const fetchWithRetry = async (fn, retries = 3, delay = 2000) => {
+  try {
+    await fn();
+  } catch (error) {
+    if (retries <= 0) {
+      throw new Error("Retries Ended");
+    }
+
+    console.log(`Retries - ${retries}`, error);
+
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, delay);
+    });
+
+    return fetchWithRetry(fn, retries - 1, 1000);
+  }
+};
+
+const mockFetch = async () => {
+  await Promise.reject("Checking retries");
+};
+
+fetchWithRetry(mockFetch);
+*/
+
+/*
+const promise1 = new Promise((resolve, reject) => {
+  resolve("1st");
+});
+
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("2nd");
+  }, 1000);
+});
+
+const promise3 = new Promise((resolve, reject) => {
+  resolve("3rd");
+});
+
+// Promise.all([promise1, promise2, promise3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+function myPromiseAll(promises) {
+  return new Promise((resolve, reject) => {
+    let result = [];
+    let completed = 0;
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value) => {
+          result[index] = value;
+          completed++;
+
+          if (completed === promises.length) {
+            resolve(result);
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+}
+
+myPromiseAll([promise1, promise2, promise3])
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+*/
+
+/*
+const promise1 = new Promise((resolve, reject) => {
+  resolve("1st");
+});
+
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("2nd");
+  }, 1000);
+});
+
+const promise3 = new Promise((resolve, reject) => {
+  reject("3rd");
+});
+
+// Promise.allSettled([promise1, promise2, promise3]).then((res) => {
+//   console.log(res);
+// });
+
+function myPromiseAllSettled(promises) {
+  return new Promise((resolve, reject) => {
+    let result = [];
+    let completed = 0;
+
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value) => {
+          result[index] = { status: "fulfilled", value };
+        })
+        .catch((err) => {
+          result[index] = { staus: "rejected", reason: err };
+        })
+        .finally(() => {
+          completed++;
+
+          if (completed === promises.length) {
+            resolve(result);
+          }
+        });
+    });
+  });
+}
+
+myPromiseAllSettled([promise1, promise2, promise3]).then((res) => {
+  console.log(res);
+});
+
+*/
+/*
+const promise1 = new Promise((resolve, reject) => {
+  resolve("1st");
+});
+
+const promise2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve("2nd");
+  }, 1000);
+});
+
+const promise3 = new Promise((resolve, reject) => {
+  reject("3rd");
+});
+
+// Promise.race([promise1, promise2, promise3])
+//   .then((res) => {
+//     console.log(res);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+function myPromiseRace(promises) {
+  return new Promise((resolve, reject) => {
+    promises.forEach((promise, index) => {
+      Promise.resolve(promise)
+        .then((value) => {
+          resolve(value);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
+}
+
+myPromiseRace([promise1, promise2, promise3])
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+*/
+
+console.log("========CUSTOM METHODS PRACTICE END=============");
+
+console.log("==========OUTPUT BASED QUESTION==========");
