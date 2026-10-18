@@ -15,7 +15,7 @@ const findMax = () => {
 
 console.log(findMax());
 */
-const secondMax = () => {
+const secondMax = (arr) => {
   let largest = -Infinity;
   let second = -Infinity;
 
@@ -31,4 +31,4 @@ const secondMax = () => {
   return second;
 };
 
-console.log(secondMax());
+console.log(secondMax(arr));
